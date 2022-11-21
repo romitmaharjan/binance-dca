@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM template for deploying Lambda functions and other AWS functionalities
+
+Parameters:
+  Region:
+    Type: String
+    Default: ap-southeast-2
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 30
+    Handler: index.handler
+    AutoPublishAlias: live
+    Environment:
+      Variables:
+        REGION: !Ref Region
+
+Resources:
+  tradeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: trade/
+      Description: Performs trade using Binance API
+      Role: { "Fn::Sub" : "" } # add lambda role
+      Environment:
+        Variables:
+          CREDENTIALS: !Ref binanceSecret
+
+  binanceSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: BinanceCredentials
+      Description: Holds Binance API Credentials
+      SecretString: '{"username":"MasterUsername","password":"secret-password"}'

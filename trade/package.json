@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.213.0",
     "@binance/connector": "^2.0.0-rc.3"
   }
 }
